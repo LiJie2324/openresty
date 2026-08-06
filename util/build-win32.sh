@@ -61,17 +61,17 @@ patch -p1 < ../../../patches/openssl-3.5.5-sess_set_get_cb_yield.patch || exit 1
 cd ../../..
 
 # Patch nginx's auto/lib/openssl/make to force mingw64 target.
-# This script runs from inside openresty-1.31.1.1/ (CI working-directory),
+# This script runs from inside openresty-<ver>/ (CI working-directory),
 # and bundle/ is populated by the "Prepare bundle" step (Makefile downloads
 # nginx tarball and extracts it under bundle/).
 # We patch here instead of in the repo because .gitignore has openresty-*
 # which blocks committing any files under the openresty source tree.
 echo "==> Patching nginx auto/lib/openssl/make for mingw64 target..."
-NGINX_MAKE="bundle/nginx-1.31.1/auto/lib/openssl/make"
+NGINX_MAKE=$(echo bundle/nginx-*/auto/lib/openssl/make 2>/dev/null)
 if [ ! -f "$NGINX_MAKE" ]; then
     # Fallback: try absolute path relative to repo root
     REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-    NGINX_MAKE="$REPO_ROOT/openresty-1.31.1.1/bundle/nginx-1.31.1/auto/lib/openssl/make"
+    NGINX_MAKE=$(echo "$REPO_ROOT"/openresty-*/bundle/nginx-*/auto/lib/openssl/make 2>/dev/null)
 fi
 if [ -f "$NGINX_MAKE" ]; then
     # The original nginx auto/lib/openssl/make has this line:

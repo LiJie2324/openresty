@@ -46,12 +46,12 @@ jobs:
           make
 
       - name: Build OpenResty
-        working-directory: openresty-1.31.1.1
+        working-directory: openresty-1.31.3.1
         run: |
           bash ../util/build-win32.sh
 
       - name: Package
-        working-directory: openresty-1.31.1.1
+        working-directory: openresty-1.31.3.1
         run: |
           bash ../util/package-win32.sh || true
 
@@ -59,4 +59,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: openresty-windows-x64
-          path: openresty-1.31.1.1/openresty-*-win64.zip
+          path: openresty-1.31.3.1/openresty-*-win64.zip

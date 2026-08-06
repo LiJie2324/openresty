@@ -157,12 +157,14 @@ cd "$PROJECT_DIR"
 
 # First, we need to get the openresty bundle extracted
 # Run make to prepare the bundle
-if [ ! -d "openresty-1.31.1.1" ]; then
+OPENRESTY_DIR=$(echo "$PROJECT_DIR"/openresty-[0-9]*.[0-9]*.[0-9]*.[0-9]* 2>/dev/null | head -1)
+if [ -z "$OPENRESTY_DIR" ] || [ ! -d "$OPENRESTY_DIR" ]; then
     echo "--- Preparing OpenResty bundle ---"
     make
+    OPENRESTY_DIR=$(echo "$PROJECT_DIR"/openresty-[0-9]*.[0-9]*.[0-9]*.[0-9]* 2>/dev/null | head -1)
 fi
 
-cd "openresty-1.31.1.1" || {
+cd "$OPENRESTY_DIR" || {
     echo "ERROR: No openresty-* directory found"
     ls -la
     exit 1
